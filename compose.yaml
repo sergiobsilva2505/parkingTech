@@ -1,13 +1,16 @@
 services:
   mysql:
     image: 'mysql:8.0.32'
+    restart: always
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
+      - 'MYSQL_DATABASE=pqm'
+      - 'MYSQL_PASSWORD=root'
+      - 'MYSQL_ROOT_PASSWORD=root'
       - 'MYSQL_USER=myuser'
     ports:
-      - '3306'
+      - 3307:3306
+    volumes:
+      - ./mysql/data:/var/lib/mysql
   redis:
     image: 'redis:7.2.1-alpine'
     ports:
