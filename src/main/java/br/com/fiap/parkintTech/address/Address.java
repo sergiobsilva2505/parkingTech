@@ -1,4 +1,4 @@
-package techchallenge.pqm.address;
+package br.com.fiap.parkintTech.address;
 
 import jakarta.persistence.*;
 

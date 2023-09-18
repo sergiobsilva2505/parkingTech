@@ -1,8 +1,8 @@
-package techchallenge.pqm.parkingticket;
+package br.com.fiap.parkintTech.parkingticket;
 
+import br.com.fiap.parkintTech.parkingmeter.ParkingMeter;
+import br.com.fiap.parkintTech.parkingmeter.ParkingMeterRepository;
 import org.springframework.stereotype.Service;
-import techchallenge.pqm.parkingmeter.ParkingMeter;
-import techchallenge.pqm.parkingmeter.ParkingMeterRepository;
 
 @Service
 public class ParkingTicketService {

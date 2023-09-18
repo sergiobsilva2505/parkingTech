@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>techchallenge</groupId>
-    <artifactId>pqm</artifactId>
+    <artifactId>parkingTech</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>pqm</name>
     <description>pqm</description>

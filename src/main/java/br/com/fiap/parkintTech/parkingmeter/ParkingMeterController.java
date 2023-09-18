@@ -1,4 +1,4 @@
-package techchallenge.pqm.parkingmeter;
+package br.com.fiap.parkintTech.parkingmeter;
 
 import org.springframework.web.bind.annotation.*;
 

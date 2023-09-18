@@ -1,4 +1,4 @@
-package techchallenge.pqm.parkingticket;
+package br.com.fiap.parkintTech.parkingticket;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

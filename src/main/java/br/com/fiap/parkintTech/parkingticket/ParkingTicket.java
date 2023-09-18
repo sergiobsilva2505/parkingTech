@@ -1,7 +1,7 @@
-package techchallenge.pqm.parkingticket;
+package br.com.fiap.parkintTech.parkingticket;
 
+import br.com.fiap.parkintTech.parkingmeter.ParkingMeter;
 import jakarta.persistence.*;
-import techchallenge.pqm.parkingmeter.ParkingMeter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
