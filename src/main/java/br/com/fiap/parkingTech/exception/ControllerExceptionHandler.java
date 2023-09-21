@@ -24,8 +24,8 @@ public class ControllerExceptionHandler {
         this.messageSource = messageSource;
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    ResponseEntity<StandardError> entityNotFoundException(EntityNotFoundException exception, HttpServletRequest request) {
+    @ExceptionHandler(ObjectNotFoundException.class)
+    ResponseEntity<StandardError> entityNotFoundException(ObjectNotFoundException exception, HttpServletRequest request) {
         HttpStatus notFound = HttpStatus.NOT_FOUND;
         StandardError standardError = new StandardError(Instant.now(), notFound.value(), exception.getMessage(), request.getServletPath());
 

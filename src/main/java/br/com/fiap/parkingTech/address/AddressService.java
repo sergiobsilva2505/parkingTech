@@ -1,6 +1,7 @@
 package br.com.fiap.parkingTech.address;
 
 import br.com.fiap.parkingTech.exception.DatabaseException;
+import br.com.fiap.parkingTech.exception.ObjectNotFoundException;
 import br.com.fiap.parkingTech.exception.ServiceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,15 +25,17 @@ public class AddressService {
         return new AddressView(address);
     }
 
+    @Transactional(readOnly = true)
     public List<AddressView> findAll() {
         List<Address> addresses = addressRepository.findAll();
 
         return addresses.stream().map(AddressView::new).toList();
     }
 
+    @Transactional(readOnly = true)
     public AddressView findById(Long id) {
         Address address = addressRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado, id: %s".formatted(id)));
+                .orElseThrow(() -> new ObjectNotFoundException("Endereço não encontrado, id: %s".formatted(id)));
 
         return new AddressView(address);
     }
@@ -40,7 +43,7 @@ public class AddressService {
     @Transactional
     public AddressView update(Long id, AddressForm addressForm) {
         Address address = addressRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado, id: %s".formatted(id)));
+                .orElseThrow(() -> new ObjectNotFoundException("Endereço não encontrado, id: %s".formatted(id)));
         address.merge(addressForm);
 
         return new AddressView(address);
