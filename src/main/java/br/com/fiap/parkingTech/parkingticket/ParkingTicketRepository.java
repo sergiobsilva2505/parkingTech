@@ -1,4 +1,4 @@
-package br.com.fiap.parkintTech.parkingticket;
+package br.com.fiap.parkingTech.parkingticket;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
