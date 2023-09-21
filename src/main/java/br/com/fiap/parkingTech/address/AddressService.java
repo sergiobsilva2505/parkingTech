@@ -1,5 +1,7 @@
 package br.com.fiap.parkingTech.address;
 
+import br.com.fiap.parkingTech.driver.Driver;
+import br.com.fiap.parkingTech.driver.DriverRepository;
 import br.com.fiap.parkingTech.exception.DatabaseException;
 import br.com.fiap.parkingTech.exception.ObjectNotFoundException;
 import br.com.fiap.parkingTech.exception.ServiceNotFoundException;
@@ -14,22 +16,27 @@ import java.util.List;
 public class AddressService {
 
     private final AddressRepository addressRepository;
+    private final DriverRepository driverRepository;
 
-    public AddressService(AddressRepository addressRepository) {
+    public AddressService(AddressRepository addressRepository, DriverRepository driverRepository) {
         this.addressRepository = addressRepository;
+        this.driverRepository = driverRepository;
     }
 
     @Transactional
     public AddressView save(AddressForm addressForm) {
-        Address address = addressRepository.save(addressForm.toEntity());
-        return new AddressView(address);
+        Driver driver = driverRepository.findById(addressForm.driverId())
+                .orElseThrow(() -> new ObjectNotFoundException("Condutor não encontrado, id: %s".formatted(addressForm.driverId())));
+        Address address = addressRepository.save(addressForm.toEntity(driver));
+
+        return new AddressView(address, address.getDriver());
     }
 
     @Transactional(readOnly = true)
     public List<AddressView> findAll() {
         List<Address> addresses = addressRepository.findAll();
 
-        return addresses.stream().map(AddressView::new).toList();
+        return addresses.stream().map(address -> new AddressView(address, address.getDriver())).toList();
     }
 
     @Transactional(readOnly = true)
@@ -37,7 +44,7 @@ public class AddressService {
         Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Endereço não encontrado, id: %s".formatted(id)));
 
-        return new AddressView(address);
+        return new AddressView(address, address.getDriver());
     }
 
     @Transactional
@@ -46,7 +53,7 @@ public class AddressService {
                 .orElseThrow(() -> new ObjectNotFoundException("Endereço não encontrado, id: %s".formatted(id)));
         address.merge(addressForm);
 
-        return new AddressView(address);
+        return new AddressView(address, address.getDriver());
     }
 
     public void deleteById(Long id) {

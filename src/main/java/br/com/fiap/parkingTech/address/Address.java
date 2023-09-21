@@ -1,7 +1,9 @@
 package br.com.fiap.parkingTech.address;
 
+import br.com.fiap.parkingTech.driver.Driver;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -22,17 +24,21 @@ public class Address {
     private String city;
     @NotBlank
     private String state;
+    @NotNull
+    @ManyToOne
+    private Driver driver;
 
     @Deprecated
     public Address() {
     }
 
-    public Address(String street, String number, String neighborhood, String city, String state) {
+    public Address(String street, String number, String neighborhood, String city, String state, Driver driver) {
         this.street = street;
         this.number = number;
         this.neighborhood = neighborhood;
         this.city = city;
         this.state = state;
+        this.driver = driver;
     }
 
     public void merge(AddressForm addressForm) {
@@ -65,5 +71,9 @@ public class Address {
 
     public String getState() {
         return state;
+    }
+
+    public Driver getDriver() {
+        return driver;
     }
 }
