@@ -5,24 +5,24 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
-public class DriverFormValidator implements Validator {
+public class NewDriverFormValidator implements Validator {
 
     private final DriverRepository driverRepository;
 
-    public DriverFormValidator(DriverRepository driverRepository) {
+    public NewDriverFormValidator(DriverRepository driverRepository) {
         this.driverRepository = driverRepository;
     }
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return DriverForm.class.isAssignableFrom(aClass);
+        return NewDriverForm.class.isAssignableFrom(aClass);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        DriverForm driverForm = (DriverForm) target;
-        String driverLicense = driverForm.driverLicense();
-        String email = driverForm.email();
+        NewDriverForm newDriverForm = (NewDriverForm) target;
+        String driverLicense = newDriverForm.driverLicense();
+        String email = newDriverForm.email();
 
         if(driverRepository.existsByDriverLicense(driverLicense)) {
             errors.rejectValue("driverLicense", "driverlicense.already.exists");

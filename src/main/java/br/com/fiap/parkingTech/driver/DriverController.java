@@ -14,21 +14,28 @@ import java.util.List;
 public class DriverController {
 
     private final DriverService driverService;
-    private final DriverFormValidator driverFormValidator;
+    private final NewDriverFormValidator newDriverFormValidator;
+    private final UpdateDriverFormValidator updateDriverFormValidator;
 
-    public DriverController(DriverService driverService, DriverFormValidator driverFormValidator) {
+    public DriverController(DriverService driverService, NewDriverFormValidator newDriverFormValidator, UpdateDriverFormValidator updateDriverFormValidator) {
         this.driverService = driverService;
-        this.driverFormValidator = driverFormValidator;
+        this.newDriverFormValidator = newDriverFormValidator;
+        this.updateDriverFormValidator = updateDriverFormValidator;
     }
 
-    @InitBinder("driverForm")
-    void initWebDataBinder(WebDataBinder webDataBinder){
-        webDataBinder.addValidators(driverFormValidator);
+    @InitBinder("newDriverForm")
+    void initBinderNewDriverForm(WebDataBinder webDataBinder){
+        webDataBinder.addValidators(newDriverFormValidator);
+    }
+
+    @InitBinder("updateDriverForm")
+    void initBinderUpdateDriverForm(WebDataBinder webDataBinder){
+        webDataBinder.addValidators(updateDriverFormValidator);
     }
 
     @PostMapping
-    ResponseEntity<DriverView> save(@Valid @RequestBody DriverForm driverForm) {
-        DriverView driverView = driverService.save(driverForm);
+    ResponseEntity<DriverView> save(@Valid @RequestBody NewDriverForm newDriverForm) {
+        DriverView driverView = driverService.save(newDriverForm);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(driverView.id()).toUri();
 
         return ResponseEntity.created(uri).body(driverView);
@@ -49,8 +56,8 @@ public class DriverController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<DriverView> update(@PathVariable Long id,@Valid @RequestBody DriverForm driverForm) {
-        DriverView driversView = driverService.update(id, driverForm);
+    ResponseEntity<DriverView> update(@PathVariable Long id,@Valid @RequestBody UpdateDriverForm updateDriverForm) {
+        DriverView driversView = driverService.update(id, updateDriverForm);
 
         return ResponseEntity.ok().body(driversView);
     }

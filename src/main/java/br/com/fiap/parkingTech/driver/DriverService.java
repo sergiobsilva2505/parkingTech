@@ -20,8 +20,8 @@ public class DriverService {
     }
 
     @Transactional
-    public DriverView save(DriverForm driverForm) {
-        Driver driver = driverRepository.save(driverForm.toEntity());
+    public DriverView save(NewDriverForm newDriverForm) {
+        Driver driver = driverRepository.save(newDriverForm.toEntity());
 
         return new DriverView(driver);
     }
@@ -42,10 +42,10 @@ public class DriverService {
     }
 
     @Transactional
-    public DriverView update(Long id, DriverForm driverForm) {
+    public DriverView update(Long id, UpdateDriverForm updateDriverForm) {
         Driver driver = driverRepository.findById(id)
                 .orElseThrow(()-> new ObjectNotFoundException("Condutor não encontrado, id: %s".formatted(id)));
-        driver.merge(driverForm);
+        driver.merge(updateDriverForm);
 
         return new DriverView(driver);
     }

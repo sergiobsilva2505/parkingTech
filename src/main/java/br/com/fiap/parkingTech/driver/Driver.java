@@ -1,6 +1,5 @@
 package br.com.fiap.parkingTech.driver;
 
-import br.com.fiap.parkingTech.address.Address;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -28,11 +27,11 @@ public class Driver implements Serializable {
         this.mobileNumber = mobileNumber;
     }
 
-    public void merge(DriverForm driverForm) {
-        this.name = driverForm.name();
-        this.email = driverForm.email();
-        this.driverLicense = driverForm.driverLicense();
-        this.mobileNumber = driverForm.mobileNumber();
+    public void merge(UpdateDriverForm updateDriverForm) {
+        this.name = updateDriverForm.name();
+        this.email = updateDriverForm.email();
+        this.driverLicense = updateDriverForm.driverLicense();
+        this.mobileNumber = updateDriverForm.mobileNumber();
     }
 
     public Long getId() {
