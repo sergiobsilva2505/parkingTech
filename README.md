@@ -1,7 +1,7 @@
 - ### API de Condutores
 
-<details>
-	  <summary>Cadastrar um condutor</summary>
+  <details>
+    <summary>Cadastrar um condutor</summary>
 
     - POST: http://localhost:8080/drivers
       - Request:
@@ -51,8 +51,7 @@
               }
             ]
           }
-        ```      
-
+        ```
   </details>
 
   <details>
