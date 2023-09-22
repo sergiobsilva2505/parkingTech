@@ -55,7 +55,7 @@
   </details>
 
   <details>
-    <summary>Buscar todos os condutoress</summary>
+    <summary>Buscar todos os condutores</summary>
 
     - GET: http://localhost:8080/drivers
       - Request:
