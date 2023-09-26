@@ -1,8 +1,8 @@
 package br.com.fiap.parkingTech.driver;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
+
+import java.util.Collection;
 
 public record UpdateDriverForm(@NotNull
                                Long id,
@@ -14,9 +14,7 @@ public record UpdateDriverForm(@NotNull
                                @Email
                                String email,
                                @NotBlank
-                               String mobileNumber) {
-
-    public Driver toEntity() {
-        return new Driver(name, email, driverLicense, mobileNumber);
-    }
+                               String mobileNumber,
+                               @NotEmpty
+                               Collection<Long> adressesIds) {
 }

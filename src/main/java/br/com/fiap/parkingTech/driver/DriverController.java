@@ -1,5 +1,6 @@
 package br.com.fiap.parkingTech.driver;
 
+import br.com.fiap.parkingTech.payment.PreferredPaymentForm;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
@@ -24,12 +25,12 @@ public class DriverController {
     }
 
     @InitBinder("newDriverForm")
-    void initBinderNewDriverForm(WebDataBinder webDataBinder){
+    void initBinderNewDriverForm(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(newDriverFormValidator);
     }
 
     @InitBinder("updateDriverForm")
-    void initBinderUpdateDriverForm(WebDataBinder webDataBinder){
+    void initBinderUpdateDriverForm(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(updateDriverFormValidator);
     }
 
@@ -41,25 +42,32 @@ public class DriverController {
         return ResponseEntity.created(uri).body(driverView);
     }
 
+    @PostMapping("/{id}/preferred-payment")
+    ResponseEntity<?> updatePreferredPayment(@PathVariable Long id, @Valid @RequestBody PreferredPaymentForm preferredPayment) {
+        DriverView driverView = driverService.updatePreferredPayment(id, preferredPayment);
+
+        return ResponseEntity.ok(driverView);
+    }
+
     @GetMapping
     ResponseEntity<List<DriverView>> findAll() {
         List<DriverView> driversView = driverService.findAll();
 
-        return ResponseEntity.ok().body(driversView);
+        return ResponseEntity.ok(driversView);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<DriverView> findById(@PathVariable Long id) {
         DriverView driverView = driverService.findById(id);
 
-        return ResponseEntity.ok().body(driverView);
+        return ResponseEntity.ok(driverView);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<DriverView> update(@PathVariable Long id,@Valid @RequestBody UpdateDriverForm updateDriverForm) {
+    ResponseEntity<DriverView> update(@PathVariable Long id, @Valid @RequestBody UpdateDriverForm updateDriverForm) {
         DriverView driversView = driverService.update(id, updateDriverForm);
 
-        return ResponseEntity.ok().body(driversView);
+        return ResponseEntity.ok(driversView);
     }
 
     @DeleteMapping("/{id}")

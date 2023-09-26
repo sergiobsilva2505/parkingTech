@@ -16,35 +16,28 @@ import java.util.List;
 public class AddressService {
 
     private final AddressRepository addressRepository;
-    private final DriverRepository driverRepository;
 
-    public AddressService(AddressRepository addressRepository, DriverRepository driverRepository) {
+    public AddressService(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
-        this.driverRepository = driverRepository;
     }
 
-    @Transactional
     public AddressView save(AddressForm addressForm) {
-        Driver driver = driverRepository.findById(addressForm.driverId())
-                .orElseThrow(() -> new ObjectNotFoundException("Condutor não encontrado, id: %s".formatted(addressForm.driverId())));
-        Address address = addressRepository.save(addressForm.toEntity(driver));
+        Address address = addressRepository.save(addressForm.toEntity());
 
-        return new AddressView(address, address.getDriver());
+        return new AddressView(address);
     }
 
-    @Transactional(readOnly = true)
     public List<AddressView> findAll() {
         List<Address> addresses = addressRepository.findAll();
 
-        return addresses.stream().map(address -> new AddressView(address, address.getDriver())).toList();
+        return addresses.stream().map(AddressView::new).toList();
     }
 
-    @Transactional(readOnly = true)
     public AddressView findById(Long id) {
         Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Endereço não encontrado, id: %s".formatted(id)));
 
-        return new AddressView(address, address.getDriver());
+        return new AddressView(address);
     }
 
     @Transactional
@@ -53,7 +46,7 @@ public class AddressService {
                 .orElseThrow(() -> new ObjectNotFoundException("Endereço não encontrado, id: %s".formatted(id)));
         address.merge(addressForm);
 
-        return new AddressView(address, address.getDriver());
+        return new AddressView(address);
     }
 
     public void deleteById(Long id) {

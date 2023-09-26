@@ -1,7 +1,9 @@
 package br.com.fiap.parkingTech.driver;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import br.com.fiap.parkingTech.address.Address;
+import jakarta.validation.constraints.*;
+
+import java.util.Collection;
 
 public record NewDriverForm(@NotBlank
                             String name,
@@ -11,9 +13,11 @@ public record NewDriverForm(@NotBlank
                             @Email
                             String email,
                             @NotBlank
-                            String mobileNumber) {
+                            String mobileNumber,
+                            @NotEmpty
+                            Collection<Long> adressesIds) {
 
-    public Driver toEntity() {
-        return new Driver(name, email, driverLicense, mobileNumber);
+    public Driver toEntity(Collection<Address> addresses) {
+        return new Driver(name, email, driverLicense, mobileNumber, addresses);
     }
 }

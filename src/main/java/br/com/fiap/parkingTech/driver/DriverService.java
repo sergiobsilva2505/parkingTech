@@ -1,8 +1,9 @@
 package br.com.fiap.parkingTech.driver;
 
-import br.com.fiap.parkingTech.exception.DatabaseException;
-import br.com.fiap.parkingTech.exception.ObjectNotFoundException;
-import br.com.fiap.parkingTech.exception.ServiceNotFoundException;
+import br.com.fiap.parkingTech.address.Address;
+import br.com.fiap.parkingTech.address.AddressRepository;
+import br.com.fiap.parkingTech.exception.*;
+import br.com.fiap.parkingTech.payment.PreferredPaymentForm;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -14,26 +15,27 @@ import java.util.List;
 public class DriverService {
 
     private final DriverRepository driverRepository;
+    private final AddressRepository addressRepository;
 
-    public DriverService(DriverRepository driverRepository) {
+    public DriverService(DriverRepository driverRepository,
+                         AddressRepository addressRepository) {
         this.driverRepository = driverRepository;
+        this.addressRepository = addressRepository;
     }
 
-    @Transactional
     public DriverView save(NewDriverForm newDriverForm) {
-        Driver driver = driverRepository.save(newDriverForm.toEntity());
+        List<Address> adresses = addressRepository.findAllById(newDriverForm.adressesIds());
+        Driver driver = driverRepository.save(newDriverForm.toEntity(adresses));
 
         return new DriverView(driver);
     }
 
-    @Transactional(readOnly = true)
     public List<DriverView> findAll() {
         List<Driver> drivers = driverRepository.findAll();
 
         return drivers.stream().map(DriverView::new).toList();
     }
 
-    @Transactional(readOnly = true)
     public DriverView findById(Long id) {
         Driver driver = driverRepository.findById(id)
                 .orElseThrow(()-> new ObjectNotFoundException("Condutor não encontrado, id: %s".formatted(id)));
@@ -42,10 +44,22 @@ public class DriverService {
     }
 
     @Transactional
-    public DriverView update(Long id, UpdateDriverForm updateDriverForm) {
+    public DriverView updatePreferredPayment(Long id, PreferredPaymentForm preferredPayment) {
         Driver driver = driverRepository.findById(id)
                 .orElseThrow(()-> new ObjectNotFoundException("Condutor não encontrado, id: %s".formatted(id)));
-        driver.merge(updateDriverForm);
+
+        driver.setPreferredPayment(preferredPayment.preferredPaymentType());
+
+        return new DriverView(driver);
+    }
+
+    @Transactional
+    public DriverView update(Long id, UpdateDriverForm updateDriverForm) {
+        List<Address> adresses = addressRepository.findAllById(updateDriverForm.adressesIds());
+        Driver driver = driverRepository.findById(id)
+                .orElseThrow(()-> new ObjectNotFoundException("Condutor não encontrado, id: %s".formatted(id)));
+
+        driver.merge(updateDriverForm, adresses);
 
         return new DriverView(driver);
     }

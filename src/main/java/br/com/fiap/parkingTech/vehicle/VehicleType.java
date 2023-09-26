@@ -2,5 +2,5 @@ package br.com.fiap.parkingTech.vehicle;
 
 public enum VehicleType {
 
-    CAR, MOTORCYCLE, BUS, TRUCK;
+    CAR, MOTORCYCLE, BUS, TRUCK, OTHER
 }

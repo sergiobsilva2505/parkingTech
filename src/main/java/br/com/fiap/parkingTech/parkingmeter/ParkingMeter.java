@@ -22,6 +22,22 @@ public class ParkingMeter implements Serializable {
     private List<ParkingTicket> parkingTickets;
 
     private BigDecimal pricePerHour;
-    private boolean isOccupied;
 
+    public ParkingMeter() {}
+
+    public BigDecimal getPricePerHour() {
+        return pricePerHour;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public List<ParkingTicket> getParkingTickets() {
+        return parkingTickets;
+    }
 }
