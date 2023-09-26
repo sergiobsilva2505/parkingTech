@@ -1,4 +1,4 @@
-package br.com.fiap.parkintTech;
+package br.com.fiap.parkingTech;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

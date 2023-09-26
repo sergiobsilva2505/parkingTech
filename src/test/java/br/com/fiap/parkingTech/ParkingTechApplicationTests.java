@@ -1,4 +1,4 @@
-package br.com.fiap.parkintTech;
+package br.com.fiap.parkingTech;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

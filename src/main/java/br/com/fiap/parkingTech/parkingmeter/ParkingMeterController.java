@@ -1,4 +1,4 @@
-package br.com.fiap.parkintTech.parkingmeter;
+package br.com.fiap.parkingTech.parkingmeter;
 
 import org.springframework.web.bind.annotation.*;
 

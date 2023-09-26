@@ -1,8 +1,8 @@
-package br.com.fiap.parkintTech.parkingmeter;
+package br.com.fiap.parkingTech.parkingmeter;
 
-import br.com.fiap.parkintTech.address.Address;
+import br.com.fiap.parkingTech.address.Address;
 import jakarta.persistence.*;
-import br.com.fiap.parkintTech.parkingticket.ParkingTicket;
+import br.com.fiap.parkingTech.parkingticket.ParkingTicket;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

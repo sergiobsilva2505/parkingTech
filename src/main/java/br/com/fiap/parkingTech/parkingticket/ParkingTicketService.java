@@ -1,7 +1,7 @@
-package br.com.fiap.parkintTech.parkingticket;
+package br.com.fiap.parkingTech.parkingticket;
 
-import br.com.fiap.parkintTech.parkingmeter.ParkingMeter;
-import br.com.fiap.parkintTech.parkingmeter.ParkingMeterRepository;
+import br.com.fiap.parkingTech.parkingmeter.ParkingMeter;
+import br.com.fiap.parkingTech.parkingmeter.ParkingMeterRepository;
 import org.springframework.stereotype.Service;
 
 @Service
