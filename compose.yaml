@@ -1,7 +1,6 @@
 services:
   mysql:
     image: 'mysql:8.0.32'
-    restart: always
     environment:
       - 'MYSQL_DATABASE=pqm'
       - 'MYSQL_PASSWORD=root'
