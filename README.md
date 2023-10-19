@@ -740,3 +740,222 @@
         ```
   </details>
 
+- ### API de veículos:
+
+  <details>
+   <summary>Cadastrar um veículo</summary>
+
+    - POST: http://localhost:8080/vehicles
+        - Request:
+          ```bash
+            curl -X POST 'localhost:8080/vehicles' \
+            -H 'Content-Type: application/json' \
+            --data '{
+              "brand":"chevrolet",
+              "model":"onix",
+              "color":"blue",
+              "licensePlate": "AWS4528",
+              "vehicleType": "CAR"
+            }'
+          ```
+        - Response 201:
+          ```json
+            {
+              "id": 5,
+              "brand": "chevrolet",
+              "model": "onix",
+              "color": "blue",
+              "licensePlate": "AWS4528",
+              "vehicleType": "CAR"
+            }
+          ```
+        - Response 400:
+          ```json
+            {
+              "timestamp": "2023-10-19T20:58:40.102739302Z",
+              "status": 400,
+              "message": "ocorreu um ou mais erros de validação",
+              "path": "/vehicles",
+              "invalidParams": [
+                {
+                  "field": "model",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "color",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "licensePlate",
+                  "message": "deve corresponder ao padrão (XXX8888)"
+                },
+                {
+                  "field": "brand",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "licensePlate",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "vehicleType",
+                  "message": "não deve ser nulo"
+                }
+              ]
+            }
+          ```        
+  </details>
+
+  <details>
+    <summary>Buscar todos os veículos</summary>
+
+    - GET: http://localhost:8080/vehicles
+        - Request:
+          ```bash
+            curl -X GET 'localhost:8080/vehicles'
+          ```
+        - Response 200:
+          ```json
+          [
+            {
+              "id": 1,
+              "brand": "fiat",
+              "model": "marea",
+              "color": "black",
+              "licensePlate": "EFC7449",
+              "vehicleType": "CAR"
+            },
+            {
+              "id": 2,
+              "brand": "volkswagen",
+              "model": "gol",
+              "color": "green",
+              "licensePlate": "EYA1234",
+              "vehicleType": "CAR"
+            },
+            {
+              "id": 3,
+              "brand": "volkswagen",
+              "model": "gol",
+              "color": "green",
+              "licensePlate": "EYY1234",
+              "vehicleType": "CAR"
+            },
+            {
+              "id": 5,
+              "brand": "chevrolet",
+              "model": "onix",
+              "color": "blue",
+              "licensePlate": "AWS4528",
+              "vehicleType": "CAR"
+            }
+          ]
+          ```
+  </details>
+
+  <details>
+    <summary>Buscar um veículo</summary>
+
+    - GET: http://localhost:8080/vehicles/{id} *(id do veículo buscado)*
+        - Request:
+          ```bash
+            curl -X GET 'localhost:8080/vehicles/1'
+          ```
+        - Response 200:
+          ```json
+            {
+              "id": 1,
+              "brand": "fiat",
+              "model": "marea",
+              "color": "black",
+              "licensePlate": "EFC7449",
+              "vehicleType": "CAR"
+            }
+          ```
+        - Response 404:
+          ```json
+            {
+              "timestamp": "2023-09-22T02:01:28.566949163Z",
+              "status": 404,
+              "message": "Veículo não encontrado, id: 20",
+              "path": "/vehicles/20"
+            }
+          ```
+  </details>  
+
+  <details>
+    <summary>Atualizar um veículo</summary>
+
+    - PUT: http://localhost:8080/vehicles/{id} *(id do veículo a ser atualizado)*
+        - Request:
+          ```bash
+            curl -X PUT 'localhost:8080/vehicles/1' \
+            -H 'Content-Type: application/json' \
+            --data '{
+              "id":1,
+              "brand":"fiat",
+              "model":"marea",
+              "color":"black",
+              "licensePlate": "EFC7449",
+              "vehicleType": "CAR"
+            }'
+          ```
+        - Response 200:
+          ```json        
+            {
+              "id": 1,
+              "brand": "fiat",
+              "model": "marea",
+              "color": "black",
+              "licensePlate": "EFC7449",
+              "vehicleType": "CAR"
+            }
+          ```
+        - Response 400:
+          ```json
+            {
+              "timestamp": "2023-10-19T21:13:25.511734892Z",
+              "status": 400,
+              "message": "ocorreu um ou mais erros de validação",
+              "path": "/vehicles/1",
+              "invalidParams": [
+                {
+                  "field": "model",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "brand",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "licensePlate",
+                  "message": "já existe um veiculo com essa placa"
+                }
+              ]
+            }
+          ```
+  </details>
+
+  <details>
+    <summary>Deletar um veículo</summary>
+
+    - DELETE: http://localhost:8080/vehicles/{id} *(id do veículo a ser deletado)*
+        - Request:
+          ```bash
+            curl -X DELETE 'localhost:8080/vehicles/4'
+          ```
+        - Response 204:
+          ```json
+            {}
+          ```
+        - Response 404:
+          ```json
+            {
+              "timestamp": "2023-09-22T01:44:37.350570675Z",
+              "status": 404,
+              "message": "Veículo não encontrado, id: 51",
+              "path": "/vehicles"
+            }
+          ```      
+  </details>
+
