@@ -4,7 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public record UpdateVehicleForm(Long id,
+public record UpdateVehicleForm(@NotNull
+                                Long id,
                                 @NotBlank
                                 String brand,
                                 @NotBlank
