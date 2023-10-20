@@ -1,5 +1,6 @@
 package br.com.fiap.parkingTech.vehicle;
 
+import br.com.fiap.parkingTech.driver.Driver;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -14,9 +15,11 @@ public record NewVehicleForm(@NotBlank
                              @Pattern(regexp = "[A-Z]{3}[0-9]{4}", message = "deve corresponder ao padrão (XXX8888)")
                              String licensePlate,
                              @NotNull
-                             VehicleType vehicleType) {
+                             VehicleType vehicleType,
+                             @NotNull
+                             Long driverId) {
 
-    public Vehicle toEntity() {
-        return new Vehicle(brand, model, color, licensePlate, vehicleType);
+    public Vehicle toEntity(Driver driver) {
+        return new Vehicle(brand, model, color, licensePlate, vehicleType, driver);
     }
 }

@@ -16,5 +16,7 @@ public record UpdateVehicleForm(@NotNull
                                 @Pattern(regexp = "[A-Z]{3}[0-9]{4}", message = "deve corresponder ao padrão (XXX8888)")
                                 String licensePlate,
                                 @NotNull
-                                VehicleType vehicleType) {
+                                VehicleType vehicleType,
+                                @NotNull
+                                Long driverId) {
 }

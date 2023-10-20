@@ -1,5 +1,6 @@
 package br.com.fiap.parkingTech.vehicle;
 
+import br.com.fiap.parkingTech.driver.Driver;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,23 +26,28 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     private VehicleType vehicleType;
 
+    @ManyToOne
+    private Driver driver;
+
     public Vehicle() {
     }
 
-    public Vehicle(String brand, String model, String color, String licensePlate, VehicleType vehicleType) {
+    public Vehicle(String brand, String model, String color, String licensePlate, VehicleType vehicleType, Driver driver) {
         this.brand = brand;
         this.model = model;
         this.color = color;
         this.licensePlate = licensePlate;
         this.vehicleType = vehicleType;
+        this.driver = driver;
     }
 
-    public void merge(UpdateVehicleForm updateVehicleForm) {
+    public void merge(UpdateVehicleForm updateVehicleForm, Driver driver) {
         this.brand = updateVehicleForm.brand();
         this.model = updateVehicleForm.model();
         this.color = updateVehicleForm.color();
         this.licensePlate = updateVehicleForm.licensePlate();
         this.vehicleType = updateVehicleForm.vehicleType();
+        this.driver = driver;
     }
 
     public Long getId() {
@@ -66,5 +72,9 @@ public class Vehicle {
 
     public VehicleType getVehicleType() {
         return vehicleType;
+    }
+
+    public Driver getDriver() {
+        return driver;
     }
 }

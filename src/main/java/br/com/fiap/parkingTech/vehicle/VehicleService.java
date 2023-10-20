@@ -1,10 +1,12 @@
 package br.com.fiap.parkingTech.vehicle;
 
-import br.com.fiap.parkingTech.address.Address;
+import br.com.fiap.parkingTech.driver.Driver;
+import br.com.fiap.parkingTech.driver.DriverRepository;
 import br.com.fiap.parkingTech.exception.DatabaseException;
 import br.com.fiap.parkingTech.exception.ObjectNotFoundException;
 import br.com.fiap.parkingTech.exception.ServiceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,14 +16,17 @@ import java.util.List;
 @Service
 public class VehicleService {
 
+    private final DriverRepository driverRepository;
     private final VehicleRepository vehicleRepository;
 
-    public VehicleService(VehicleRepository vehicleRepository) {
+    public VehicleService(DriverRepository driverRepository, VehicleRepository vehicleRepository) {
+        this.driverRepository = driverRepository;
         this.vehicleRepository = vehicleRepository;
     }
 
     public VehicleView save(NewVehicleForm newVehicleForm) {
-        Vehicle vehicle = vehicleRepository.save(newVehicleForm.toEntity());
+        Driver driver = driverRepository.findById(newVehicleForm.driverId()).orElseThrow(() -> new ObjectNotFoundException("Condutor não encontrado, id: %s".formatted(newVehicleForm.driverId())));
+        Vehicle vehicle = vehicleRepository.save(newVehicleForm.toEntity(driver));
 
         return new VehicleView(vehicle);
     }
@@ -40,8 +45,9 @@ public class VehicleService {
 
     @Transactional
     public VehicleView update(Long id, UpdateVehicleForm updateVehicleForm) {
+        Driver driver = driverRepository.findById(updateVehicleForm.driverId()).orElseThrow(() -> new ObjectNotFoundException("Condutor não encontrado, id: %s".formatted(updateVehicleForm.driverId())));
         Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Veiculo não encontrado, id: %s".formatted(id)));
-        vehicle.merge(updateVehicleForm);
+        vehicle.merge(updateVehicleForm, driver);
 
         return new VehicleView(vehicle);
     }

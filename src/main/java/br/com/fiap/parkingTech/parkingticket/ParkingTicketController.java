@@ -29,7 +29,7 @@ public class ParkingTicketController {
 
     @PostMapping("/parkingmeter/{parkingMeterId}/ticket/{ticketId}/close")
     public ResponseEntity<ParkingTicketView> close(@PathVariable Long parkingMeterId, @PathVariable Long ticketId) {
-        ParkingTicketView ticketView = parkingTicketService.close(parkingMeterId, ticketId);
+        ParkingTicketView ticketView = parkingTicketService.close(ticketId);
         return ResponseEntity.ok(ticketView);
     }
 }

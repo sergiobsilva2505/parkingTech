@@ -23,9 +23,11 @@ public class ParkingTicketService {
         this.parkingTicketRepository = parkingTicketRepository;
     }
 
+    // TODO: 20/10/2023  corrigir orelseThrow()
+    // TODO: 20/10/2023 validar se parquimetro está desocupado (baixa prioridade)
+
     public ParkingTicketView open(Long parkingMeterId, ParkingTicketOpenForm parkingTicketOpenForm) {
         Driver driver = driverRepository.findById(parkingTicketOpenForm.driverId()).orElseThrow();
-        // TODO: find vehicle
         ParkingMeter parkingMeter = parkingMeterRepository.findById(parkingMeterId).orElseThrow();
 
         LocalDateTime startTime = LocalDateTime.now();
@@ -45,7 +47,7 @@ public class ParkingTicketService {
         return new ParkingTicketView(parkingTicket);
     }
 
-    public ParkingTicketView close(Long parkingMeterId, Long ticketId) {
+    public ParkingTicketView close(Long ticketId) {
         ParkingTicket parkingTicket = parkingTicketRepository.findById(ticketId).orElseThrow();
 
         if (parkingTicket.isHourlyModality()) {
