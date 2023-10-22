@@ -2,6 +2,7 @@ package br.com.fiap.parkingTech.parkingticket;
 
 import br.com.fiap.parkingTech.driver.Driver;
 import br.com.fiap.parkingTech.driver.DriverRepository;
+import br.com.fiap.parkingTech.exception.ObjectNotFoundException;
 import br.com.fiap.parkingTech.parkingmeter.ParkingMeter;
 import br.com.fiap.parkingTech.parkingmeter.ParkingMeterRepository;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class ParkingTicketService {
     // TODO: 20/10/2023 validar se parquimetro está desocupado (baixa prioridade)
 
     public ParkingTicketView open(Long parkingMeterId, ParkingTicketOpenForm parkingTicketOpenForm) {
-        Driver driver = driverRepository.findById(parkingTicketOpenForm.driverId()).orElseThrow();
+        Driver driver = driverRepository.findById(parkingTicketOpenForm.driverId()).orElseThrow(()-> new ObjectNotFoundException("Condutor não encontrado, id: %d".formatted(parkingTicketOpenForm.driverId())));
         ParkingMeter parkingMeter = parkingMeterRepository.findById(parkingMeterId).orElseThrow();
 
         LocalDateTime startTime = LocalDateTime.now();
