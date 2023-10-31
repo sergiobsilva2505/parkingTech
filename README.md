@@ -424,7 +424,7 @@
         ```      
   </details>
 
-- ### API de Praquímetros
+- ### API de Parquímetros
 
   <details>
     <summary>Cadastrar um parquímetro</summary>
