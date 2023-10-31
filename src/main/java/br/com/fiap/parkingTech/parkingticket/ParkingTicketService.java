@@ -24,24 +24,18 @@ public class ParkingTicketService {
         this.parkingTicketRepository = parkingTicketRepository;
     }
 
-    // TODO: 20/10/2023  corrigir orelseThrow()
     // TODO: 20/10/2023 validar se parquimetro está desocupado (baixa prioridade)
-
     public ParkingTicketView open(Long parkingMeterId, ParkingTicketOpenForm parkingTicketOpenForm) {
         Driver driver = driverRepository.findById(parkingTicketOpenForm.driverId()).orElseThrow(()-> new ObjectNotFoundException("Condutor não encontrado, id: %d".formatted(parkingTicketOpenForm.driverId())));
-        ParkingMeter parkingMeter = parkingMeterRepository.findById(parkingMeterId).orElseThrow();
+        ParkingMeter parkingMeter = parkingMeterRepository.findById(parkingMeterId).orElseThrow(()-> new ObjectNotFoundException("Parquímetro não encontrado, id: %d".formatted(parkingMeterId)));
 
         LocalDateTime startTime = LocalDateTime.now();
         ParkingTicket parkingTicket;
 
-        if (parkingTicketOpenForm.isFixedModality()) {
-            LocalDateTime endTime = startTime.plusHours(parkingTicketOpenForm.fixedHours());
-            BigDecimal finalPrice = parkingMeter.getPricePerHour().multiply(BigDecimal.valueOf(parkingTicketOpenForm.fixedHours()));
+        LocalDateTime endTime = startTime.plusHours(parkingTicketOpenForm.fixedHours());
+        BigDecimal finalPrice = parkingMeter.getPricePerHour().multiply(BigDecimal.valueOf(parkingTicketOpenForm.fixedHours()));
 
-            parkingTicket = new ParkingTicket(parkingMeter, parkingTicketOpenForm.parkingModality(), driver.getPreferredPayment(), startTime, endTime, finalPrice);
-        } else {
-            parkingTicket = new ParkingTicket(parkingMeter, parkingTicketOpenForm.parkingModality(), driver.getPreferredPayment(), startTime);
-        }
+        parkingTicket = new ParkingTicket(parkingMeter, parkingTicketOpenForm.parkingModality(), driver.getPreferredPayment(), startTime, endTime, finalPrice);
 
         parkingTicketRepository.save(parkingTicket);
 
@@ -49,12 +43,10 @@ public class ParkingTicketService {
     }
 
     public ParkingTicketView close(Long ticketId) {
-        ParkingTicket parkingTicket = parkingTicketRepository.findById(ticketId).orElseThrow();
+        ParkingTicket parkingTicket = parkingTicketRepository.findById(ticketId).orElseThrow(()-> new ObjectNotFoundException("Tíquete não encontrado, id: %d".formatted(ticketId)));
 
-        if (parkingTicket.isHourlyModality()) {
-            parkingTicket.close();
-            parkingTicketRepository.save(parkingTicket);
-        }
+        parkingTicket.close();
+        parkingTicketRepository.save(parkingTicket);
 
         return new ParkingTicketView(parkingTicket);
     }

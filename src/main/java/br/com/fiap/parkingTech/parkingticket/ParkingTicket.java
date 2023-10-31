@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 @Entity
 public class ParkingTicket implements Serializable {
@@ -18,6 +17,9 @@ public class ParkingTicket implements Serializable {
 
     @ManyToOne(optional = false)
     private ParkingMeter parkingMeter;
+
+    @Enumerated(EnumType.STRING)
+    private ParkingTicketStatus status;
 
     @Enumerated(EnumType.STRING)
     private ParkingModality parkingModality;
@@ -32,15 +34,9 @@ public class ParkingTicket implements Serializable {
 
     public ParkingTicket() {}
 
-    public ParkingTicket(ParkingMeter parkingMeter, ParkingModality parkingModality, PaymentType paymentType, LocalDateTime startTime) {
-        this.parkingMeter = parkingMeter;
-        this.parkingModality = parkingModality;
-        this.paymentType = paymentType;
-        this.startTime = startTime;
-    }
-
     public ParkingTicket(ParkingMeter parkingMeter, ParkingModality parkingModality, PaymentType paymentType, LocalDateTime startTime, LocalDateTime endTime, BigDecimal finalPrice) {
         this.parkingMeter = parkingMeter;
+        this.status = ParkingTicketStatus.OPEN;
         this.parkingModality = parkingModality;
         this.paymentType = paymentType;
         this.startTime = startTime;
@@ -56,12 +52,16 @@ public class ParkingTicket implements Serializable {
         return parkingMeter;
     }
 
+    public void setStatus(ParkingTicketStatus status) {
+        this.status = status;
+    }
+
     public ParkingModality getParkingModality() {
         return parkingModality;
     }
 
-    public boolean isHourlyModality() {
-        return ParkingModality.HOURLY.equals(parkingModality);
+    public boolean canAutoClose() {
+        return ParkingModality.FIXED.equals(parkingModality);
     }
 
     public PaymentType getPaymentType() {
@@ -76,13 +76,31 @@ public class ParkingTicket implements Serializable {
         return endTime;
     }
 
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
     public BigDecimal getFinalPrice() {
         return finalPrice;
     }
 
+    public void setFinalPrice(BigDecimal finalPrice) {
+        this.finalPrice = finalPrice;
+    }
+
     public void close() {
-        this.endTime = LocalDateTime.now();
-        int hoursSpent = (int) Math.ceil(startTime.until(endTime, ChronoUnit.MINUTES) / 60.0);
-        this.finalPrice = parkingMeter.getPricePerHour().multiply(BigDecimal.valueOf(hoursSpent));
+        parkingModality.closeParkingTicket(this);
+    }
+
+    public long getTotalHours() {
+        return startTime.until(endTime, java.time.temporal.ChronoUnit.HOURS);
+    }
+
+    public BigDecimal getPricePerHour() {
+        return parkingMeter.getPricePerHour();
+    }
+
+    public void extend() {
+        this.endTime = endTime.plusHours(1);
     }
 }
