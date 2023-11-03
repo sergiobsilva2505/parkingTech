@@ -1,7 +1,6 @@
 package br.com.fiap.parkingTech.vehicle;
 
 import br.com.fiap.parkingTech.driver.DriverView;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record VehicleView(Long id, String brand, String model, String color, String licensePlate, VehicleType vehicleType, DriverView driver) {
 

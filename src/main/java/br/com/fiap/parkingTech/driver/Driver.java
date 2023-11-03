@@ -29,11 +29,12 @@ public class Driver implements Serializable {
     public Driver() {
     }
 
-    public Driver(String name, String email, String driverLicense, String mobileNumber, Collection<Address> addresses) {
+    public Driver(String name, String email, String driverLicense, String mobileNumber, PaymentType preferredPayment, Collection<Address> addresses) {
         this.name = name;
         this.email = email;
         this.driverLicense = driverLicense;
         this.mobileNumber = mobileNumber;
+        this.preferredPayment = preferredPayment;
         this.addresses = addresses;
     }
 
@@ -42,6 +43,7 @@ public class Driver implements Serializable {
         this.email = updateDriverForm.email();
         this.driverLicense = updateDriverForm.driverLicense();
         this.mobileNumber = updateDriverForm.mobileNumber();
+        this.preferredPayment = updateDriverForm.preferredPayment();
         this.addresses = addresses;
     }
 

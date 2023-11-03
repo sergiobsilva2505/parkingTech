@@ -39,6 +39,8 @@ public class ParkingTicketValidator implements Validator {
 
         Driver driver = possibleDriver.get();
 
+//        .isPaymentTypeAccepted(driver.getPreferredPayment())
+
         if (!parkingTicketOpenForm.parkingModality().isPaymentTypeAccepted(driver.getPreferredPayment())) {
             errors.rejectValue("parkingModality", "", "Tipo de pagamento não aceito para a modalidade de estacionamento");
         }
