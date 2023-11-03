@@ -6,6 +6,7 @@ import br.com.fiap.parkingTech.exception.ObjectNotFoundException;
 import br.com.fiap.parkingTech.parkingticket.ParkingTicket;
 import br.com.fiap.parkingTech.parkingticket.ParkingTicketRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,5 +35,23 @@ public class ParkingMeterService {
         List<ParkingMeter> parkingMeters = parkingMeterRepository.findAll();
 
         return parkingMeters.stream().map(ParkingMeterView::new).toList();
+    }
+
+    public ParkingMeterView findById(Long id) {
+        ParkingMeter parkingMeter = parkingMeterRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Parquimetro não encontrado, id: %s".formatted(id)));
+
+        return new ParkingMeterView(parkingMeter);
+    }
+
+    @Transactional
+    public ParkingMeterView update(Long parkingMeterId, UpdateParkingMeterForm updateParkingMeterForm) {
+        ParkingMeter parkingMeter = parkingMeterRepository.findById(parkingMeterId)
+                .orElseThrow(() -> new ObjectNotFoundException("Parquimetro não encontrado, id: %s".formatted(parkingMeterId)));
+        Address address = addressRepository.findById(updateParkingMeterForm.addressId())
+                .orElseThrow(() -> new ObjectNotFoundException("Endereço não encontrado, id: %s".formatted(updateParkingMeterForm.addressId())));
+        parkingMeter.merge(updateParkingMeterForm, address);
+
+        return new ParkingMeterView(parkingMeter);
     }
 }

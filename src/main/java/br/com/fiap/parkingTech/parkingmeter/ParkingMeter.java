@@ -32,6 +32,11 @@ public class ParkingMeter implements Serializable {
         this.pricePerHour = pricePerHour;
     }
 
+    public void merge(UpdateParkingMeterForm updateParkingMeterForm, Address address) {
+        this.address = address;
+        this.pricePerHour = updateParkingMeterForm.pricePerHour();
+    }
+
     public BigDecimal getPricePerHour() {
         return pricePerHour;
     }

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ParkingMeterRepository extends JpaRepository<ParkingMeter, Long> {
 
-    @Override
-    @Cacheable(value = "parkingMeter")
-    Optional<ParkingMeter> findById(Long id);
+//    @Override
+//    @Cacheable(value = "parkingMeter")
+//    Optional<ParkingMeter> findById(Long id);
 }
