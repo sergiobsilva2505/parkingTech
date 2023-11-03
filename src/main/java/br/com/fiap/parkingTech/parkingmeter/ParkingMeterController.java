@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 public class ParkingMeterController {
@@ -24,11 +25,13 @@ public class ParkingMeterController {
         return ResponseEntity.created(uri).body(parkingMeterView);
     }
 
-//    @GetMapping("/parkingmeter")
-//    ResponseEntity findAll() {
-//        return ReponseEntity.ok();"ParkingMeter";
-//    }
-//
+    @GetMapping("/parkingmeter")
+    ResponseEntity<List<ParkingMeterView>> findAll() {
+        List<ParkingMeterView> parkingMeterViews = parkingMeterService.findAll();
+
+        return ResponseEntity.ok(parkingMeterViews);
+    }
+
 //    @GetMapping("/parkingmeter/{parkingMeterId}")
 //    ResponseEntity findById(@PathVariable Long parkingMeterId) {
 //        return ReponseEntity.ok();"ParkingMeterById";

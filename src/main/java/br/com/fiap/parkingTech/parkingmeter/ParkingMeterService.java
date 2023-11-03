@@ -29,4 +29,10 @@ public class ParkingMeterService {
 
         return new ParkingMeterView(parkingMeterRepository.save(parkingMeter));
     }
+
+    public List<ParkingMeterView> findAll() {
+        List<ParkingMeter> parkingMeters = parkingMeterRepository.findAll();
+
+        return parkingMeters.stream().map(ParkingMeterView::new).toList();
+    }
 }
