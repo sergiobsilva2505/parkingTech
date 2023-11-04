@@ -29,7 +29,7 @@ public class TicketExpiringNotifyJob {
             if (parkingTicket.canAutoClose()) {
                 parkingTicket.close();
             } else {
-                parkingTicket.extend();
+                parkingTicket.extendDuration();
             }
         });
 

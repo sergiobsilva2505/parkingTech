@@ -52,6 +52,8 @@ public class ParkingMeterService {
                 .orElseThrow(() -> new ObjectNotFoundException("Endereço não encontrado, id: %s".formatted(updateParkingMeterForm.addressId())));
         parkingMeter.merge(updateParkingMeterForm, address);
 
+        parkingMeterRepository.clearCache(parkingMeterId);
+
         return new ParkingMeterView(parkingMeter);
     }
 }

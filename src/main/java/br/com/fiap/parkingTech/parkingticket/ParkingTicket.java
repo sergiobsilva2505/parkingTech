@@ -100,7 +100,7 @@ public class ParkingTicket implements Serializable {
         return parkingMeter.getPricePerHour();
     }
 
-    public void extend() {
+    public void extendDuration() {
         this.endTime = endTime.plusHours(1);
     }
 }
