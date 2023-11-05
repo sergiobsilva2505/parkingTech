@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 public class ParkingTicket implements Serializable {
@@ -84,6 +85,10 @@ public class ParkingTicket implements Serializable {
         return finalPrice;
     }
 
+    public BigDecimal calculateFinalPrice() {
+        return getPricePerHour().multiply(BigDecimal.valueOf(getTotalHours()));
+    }
+
     public void setFinalPrice(BigDecimal finalPrice) {
         this.finalPrice = finalPrice;
     }
@@ -93,7 +98,7 @@ public class ParkingTicket implements Serializable {
     }
 
     public long getTotalHours() {
-        return startTime.until(endTime, java.time.temporal.ChronoUnit.HOURS);
+        return (long) Math.ceil(startTime.until(endTime, ChronoUnit.MINUTES) / 60.0);
     }
 
     public BigDecimal getPricePerHour() {

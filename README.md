@@ -637,7 +637,7 @@
 - ### API de Tickets
 
   <details>
-  <summary>Abrir um ticket</summary>
+  <summary>Abrir um ticket com horário fixo</summary>
 
   - POST: http://localhost:8080/parkingmeter/{parkingMeterId}/ticket/open
       - Request:
@@ -647,7 +647,7 @@
           --data '{
             "driverId": 1,
             "vehicleId": 1,
-            "parkingModality": "HOURLY",
+            "parkingModality": "FIXED",
             "fixedHours": 2
           }'
         ```
@@ -689,6 +689,60 @@
             ]
           }
         ```
+  </details>
+
+    <details>
+      <summary>Abrir um ticket com horário livre</summary>
+    
+    - POST: http://localhost:8080/parkingmeter/{parkingMeterId}/ticket/open
+        - Request:
+          ```bash
+            curl -X POST 'localhost:8080/parkingmeter/1/ticket/open' \
+            -H 'Content-Type: application/json' \
+            --data '{
+              "driverId": 1,
+              "vehicleId": 1,
+              "parkingModality": "HOURLY"
+            }'
+          ```
+        - Response 201:
+          ```json
+            {
+              "id": 5,
+              "name": "Gabriel Martin Costa",
+              "driverLicense": "49747790304",
+              "email": "gabriel_costa@vegacon.com.br",
+              "mobileNumber": "27988099520",
+              "addresses":[{"id":1,"street":"Estrada da Madeira","number":"100","neighborhood":"Barragem","city":"Rio do Sul","state":"SC"}]
+            }
+          ```
+        - Response 400:
+          ```json
+            {
+              "timestamp": "2023-09-22T01:10:32.680793494Z",
+              "status": 400,
+              "message": "ocorreu um ou mais erros de validação",
+              "path": "/drivers",
+              "invalidParams": [
+                {
+                  "field": "email",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "mobileNumber",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "name",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "driverLicense",
+                  "message": "não deve estar em branco"
+                }
+              ]
+            }
+          ```
   </details>
 
   <details>

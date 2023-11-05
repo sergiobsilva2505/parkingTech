@@ -39,13 +39,6 @@ public class ParkingMeterController {
         return ResponseEntity.ok(parkingMeterView);
     }
 
-//    @GetMapping("/parkingmeter/{parkingMeterId}/ticket/report")
-//    ResponseEntity getTicketReport(@PathVariable Long parkingMeterId) {
-//        return ReponseEntity.ok();"ParkingMeterTicketReport";
-//    }
-//
-//
-//
     @PutMapping("/parkingmeter/{parkingMeterId}")
     ResponseEntity<ParkingMeterView> update(@PathVariable Long parkingMeterId, @Valid @RequestBody UpdateParkingMeterForm updateParkingMeterForm) {
         ParkingMeterView parkingMeterView = parkingMeterService.update(parkingMeterId, updateParkingMeterForm);
@@ -53,9 +46,11 @@ public class ParkingMeterController {
         return ResponseEntity.ok(parkingMeterView);
     }
 
-//    @DeleteMapping("/parkingmeter/{parkingMeterId}")
-//    ResponseEntity delete(@PathVariable Long parkingMeterId) {
-//        return ReponseEntity.ok();"DeleteParkingMeter";
-//    }
+    @DeleteMapping("/parkingmeter/{parkingMeterId}")
+    ResponseEntity<Void> delete(@PathVariable Long parkingMeterId) {
+        parkingMeterService.delete(parkingMeterId);
+
+        return ResponseEntity.noContent().build();
+    }
 
 }

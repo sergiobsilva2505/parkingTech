@@ -12,15 +12,14 @@ public enum ParkingModality {
     FIXED(List.of(PaymentType.PIX)) {
         @Override
         public void closeParkingTicket(ParkingTicket parkingTicket) {
-            parkingTicket.setFinalPrice(parkingTicket.getPricePerHour().multiply(BigDecimal.valueOf(parkingTicket.getTotalHours())));
+            parkingTicket.setFinalPrice(parkingTicket.calculateFinalPrice());
             parkingTicket.setStatus(ParkingTicketStatus.CLOSED);
         }
     }, HOURLY(List.of(PaymentType.CREDIT_CARD, PaymentType.DEBIT_CARD, PaymentType.PIX)) {
         @Override
         public void closeParkingTicket(ParkingTicket parkingTicket) {
             parkingTicket.setEndTime(LocalDateTime.now());
-            int hoursSpent = (int) Math.ceil(parkingTicket.getStartTime().until(parkingTicket.getEndTime(), ChronoUnit.MINUTES) / 60.0);
-            parkingTicket.setFinalPrice(parkingTicket.getParkingMeter().getPricePerHour().multiply(BigDecimal.valueOf(hoursSpent)));
+            parkingTicket.setFinalPrice(parkingTicket.calculateFinalPrice());
             parkingTicket.setStatus(ParkingTicketStatus.CLOSED);
         }
     };
