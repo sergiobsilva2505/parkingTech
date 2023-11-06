@@ -56,7 +56,7 @@ public class AddressService {
         } catch (EntityNotFoundException exception) {
             throw new ServiceNotFoundException("Endereço não existe, id: %d".formatted(id));
         } catch (DataIntegrityViolationException exception) {
-            throw new DatabaseException("Violação de integridade da base");
+            throw new DataIntegrityViolationException("Violação de integridade da base", exception);
         }
     }
 }

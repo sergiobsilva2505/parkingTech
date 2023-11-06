@@ -1,6 +1,5 @@
 package br.com.fiap.parkingTech.exception;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
