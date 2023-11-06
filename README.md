@@ -32,8 +32,8 @@
 
 ## Documentação das APIs
 
-### Como executar o projeto
-- executar `docker compose up` dentro da raiz do projeto e ao terminar de subir os containers subir o projeto normalmente
+- ### Como executar o projeto
+Executar `docker compose up` dentro da raiz do projeto e ao terminar de subir os containers subir o projeto normalmente
 
 
 - ### API de Endereços:
