@@ -1,8 +1,5 @@
 # Parking Tech
 
-# Como executar o projeto
-- executar `docker compose up` dentro da raiz do projeto e ao terminar de subir os containers subir o projeto normalmente
-
 ## Desafios
 - Tratamento de erros e exceções: Foi solicitado que fosse feito a validação dos dados e o tratamento de exceções retornando ao usuário uma mensagem informativa, este acabou sendo o primeiro desafio encontrado, pois existem muitas formas de tratar o erro e retornar ao usuário, a discussão foi sobre qual estratégia seguir. A primeira tentativa foi utilizando o binding result que aparentemente era uma boa opção, mas começamos a notar muita repetição de código e já começamos a comparar alternativas. A outra opção que pareceu melhor para o resultado que queríamos foi utilizar um handler geral para capturar erros com o @ExceptionHandler e o @RestControllerAdvice, que nos permitiu tratar as exceções de forma mais genérica, inclusive exceções de validação, em um único ponto.
 - Entender como funciona um sistema de parquímetro e modelar de uma forma que ficasse funcional
@@ -34,6 +31,10 @@
 - Redis
 
 ## Documentação das APIs
+
+### Como executar o projeto
+- executar `docker compose up` dentro da raiz do projeto e ao terminar de subir os containers subir o projeto normalmente
+
 
 - ### API de Endereços:
 
