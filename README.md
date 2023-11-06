@@ -1,5 +1,8 @@
 # Parking Tech
 
+# Como executar o projeto
+- executar `docker compose up` dentro da raiz do projeto e ao terminar de subir os containers subir o projeto normalmente
+
 ## Desafios
 - Tratamento de erros e exceções: Foi solicitado que fosse feito a validação dos dados e o tratamento de exceções retornando ao usuário uma mensagem informativa, este acabou sendo o primeiro desafio encontrado, pois existem muitas formas de tratar o erro e retornar ao usuário, a discussão foi sobre qual estratégia seguir. A primeira tentativa foi utilizando o binding result que aparentemente era uma boa opção, mas começamos a notar muita repetição de código e já começamos a comparar alternativas. A outra opção que pareceu melhor para o resultado que queríamos foi utilizar um handler geral para capturar erros com o @ExceptionHandler e o @RestControllerAdvice, que nos permitiu tratar as exceções de forma mais genérica, inclusive exceções de validação, em um único ponto.
 - Entender como funciona um sistema de parquímetro e modelar de uma forma que ficasse funcional
@@ -28,6 +31,8 @@
 - Docker
 - Docker Compose
 - Redis
+
+## Documentação das APIs
 
 - ### API de Endereços:
 
@@ -455,6 +460,225 @@
         ```      
   </details>
 
+- ### API de veículos:
+
+  <details>
+   <summary>Cadastrar um veículo</summary>
+
+    - POST: http://localhost:8080/vehicles
+        - Request:
+          ```bash
+            curl -X POST 'localhost:8080/vehicles' \
+            -H 'Content-Type: application/json' \
+            --data '{
+              "brand":"chevrolet",
+              "model":"onix",
+              "color":"blue",
+              "licensePlate": "AWS4528",
+              "vehicleType": "CAR"
+            }'
+          ```
+        - Response 201:
+          ```json
+            {
+              "id": 5,
+              "brand": "chevrolet",
+              "model": "onix",
+              "color": "blue",
+              "licensePlate": "AWS4528",
+              "vehicleType": "CAR"
+            }
+          ```
+        - Response 400:
+          ```json
+            {
+              "timestamp": "2023-10-19T20:58:40.102739302Z",
+              "status": 400,
+              "message": "ocorreu um ou mais erros de validação",
+              "path": "/vehicles",
+              "invalidParams": [
+                {
+                  "field": "model",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "color",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "licensePlate",
+                  "message": "deve corresponder ao padrão (XXX8888)"
+                },
+                {
+                  "field": "brand",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "licensePlate",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "vehicleType",
+                  "message": "não deve ser nulo"
+                }
+              ]
+            }
+          ```        
+  </details>
+
+  <details>
+    <summary>Buscar todos os veículos</summary>
+
+    - GET: http://localhost:8080/vehicles
+        - Request:
+          ```bash
+            curl -X GET 'localhost:8080/vehicles'
+          ```
+        - Response 200:
+          ```json
+          [
+            {
+              "id": 1,
+              "brand": "fiat",
+              "model": "marea",
+              "color": "black",
+              "licensePlate": "EFC7449",
+              "vehicleType": "CAR"
+            },
+            {
+              "id": 2,
+              "brand": "volkswagen",
+              "model": "gol",
+              "color": "green",
+              "licensePlate": "EYA1234",
+              "vehicleType": "CAR"
+            },
+            {
+              "id": 3,
+              "brand": "volkswagen",
+              "model": "gol",
+              "color": "green",
+              "licensePlate": "EYY1234",
+              "vehicleType": "CAR"
+            },
+            {
+              "id": 5,
+              "brand": "chevrolet",
+              "model": "onix",
+              "color": "blue",
+              "licensePlate": "AWS4528",
+              "vehicleType": "CAR"
+            }
+          ]
+          ```
+  </details>
+
+  <details>
+    <summary>Buscar um veículo</summary>
+
+    - GET: http://localhost:8080/vehicles/{id} *(id do veículo buscado)*
+        - Request:
+          ```bash
+            curl -X GET 'localhost:8080/vehicles/1'
+          ```
+        - Response 200:
+          ```json
+            {
+              "id": 1,
+              "brand": "fiat",
+              "model": "marea",
+              "color": "black",
+              "licensePlate": "EFC7449",
+              "vehicleType": "CAR"
+            }
+          ```
+        - Response 404:
+          ```json
+            {
+              "timestamp": "2023-09-22T02:01:28.566949163Z",
+              "status": 404,
+              "message": "Veículo não encontrado, id: 20",
+              "path": "/vehicles/20"
+            }
+          ```
+  </details>  
+
+  <details>
+    <summary>Atualizar um veículo</summary>
+
+    - PUT: http://localhost:8080/vehicles/{id} *(id do veículo a ser atualizado)*
+        - Request:
+          ```bash
+            curl -X PUT 'localhost:8080/vehicles/1' \
+            -H 'Content-Type: application/json' \
+            --data '{
+              "id":1,
+              "brand":"fiat",
+              "model":"marea",
+              "color":"black",
+              "licensePlate": "EFC7449",
+              "vehicleType": "CAR"
+            }'
+          ```
+        - Response 200:
+          ```json        
+            {
+              "id": 1,
+              "brand": "fiat",
+              "model": "marea",
+              "color": "black",
+              "licensePlate": "EFC7449",
+              "vehicleType": "CAR"
+            }
+          ```
+        - Response 400:
+          ```json
+            {
+              "timestamp": "2023-10-19T21:13:25.511734892Z",
+              "status": 400,
+              "message": "ocorreu um ou mais erros de validação",
+              "path": "/vehicles/1",
+              "invalidParams": [
+                {
+                  "field": "model",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "brand",
+                  "message": "não deve estar em branco"
+                },
+                {
+                  "field": "licensePlate",
+                  "message": "já existe um veiculo com essa placa"
+                }
+              ]
+            }
+          ```
+  </details>
+
+  <details>
+    <summary>Deletar um veículo</summary>
+
+    - DELETE: http://localhost:8080/vehicles/{id} *(id do veículo a ser deletado)*
+        - Request:
+          ```bash
+            curl -X DELETE 'localhost:8080/vehicles/4'
+          ```
+        - Response 204:
+          ```json
+            {}
+          ```
+        - Response 404:
+          ```json
+            {
+              "timestamp": "2023-09-22T01:44:37.350570675Z",
+              "status": 404,
+              "message": "Veículo não encontrado, id: 51",
+              "path": "/vehicles"
+            }
+          ```      
+  </details>
+
 - ### API de Parquímetros
 
   <details>
@@ -825,222 +1049,4 @@
         ```
   </details>
 
-- ### API de veículos:
-
-  <details>
-   <summary>Cadastrar um veículo</summary>
-
-    - POST: http://localhost:8080/vehicles
-        - Request:
-          ```bash
-            curl -X POST 'localhost:8080/vehicles' \
-            -H 'Content-Type: application/json' \
-            --data '{
-              "brand":"chevrolet",
-              "model":"onix",
-              "color":"blue",
-              "licensePlate": "AWS4528",
-              "vehicleType": "CAR"
-            }'
-          ```
-        - Response 201:
-          ```json
-            {
-              "id": 5,
-              "brand": "chevrolet",
-              "model": "onix",
-              "color": "blue",
-              "licensePlate": "AWS4528",
-              "vehicleType": "CAR"
-            }
-          ```
-        - Response 400:
-          ```json
-            {
-              "timestamp": "2023-10-19T20:58:40.102739302Z",
-              "status": 400,
-              "message": "ocorreu um ou mais erros de validação",
-              "path": "/vehicles",
-              "invalidParams": [
-                {
-                  "field": "model",
-                  "message": "não deve estar em branco"
-                },
-                {
-                  "field": "color",
-                  "message": "não deve estar em branco"
-                },
-                {
-                  "field": "licensePlate",
-                  "message": "deve corresponder ao padrão (XXX8888)"
-                },
-                {
-                  "field": "brand",
-                  "message": "não deve estar em branco"
-                },
-                {
-                  "field": "licensePlate",
-                  "message": "não deve estar em branco"
-                },
-                {
-                  "field": "vehicleType",
-                  "message": "não deve ser nulo"
-                }
-              ]
-            }
-          ```        
-  </details>
-
-  <details>
-    <summary>Buscar todos os veículos</summary>
-
-    - GET: http://localhost:8080/vehicles
-        - Request:
-          ```bash
-            curl -X GET 'localhost:8080/vehicles'
-          ```
-        - Response 200:
-          ```json
-          [
-            {
-              "id": 1,
-              "brand": "fiat",
-              "model": "marea",
-              "color": "black",
-              "licensePlate": "EFC7449",
-              "vehicleType": "CAR"
-            },
-            {
-              "id": 2,
-              "brand": "volkswagen",
-              "model": "gol",
-              "color": "green",
-              "licensePlate": "EYA1234",
-              "vehicleType": "CAR"
-            },
-            {
-              "id": 3,
-              "brand": "volkswagen",
-              "model": "gol",
-              "color": "green",
-              "licensePlate": "EYY1234",
-              "vehicleType": "CAR"
-            },
-            {
-              "id": 5,
-              "brand": "chevrolet",
-              "model": "onix",
-              "color": "blue",
-              "licensePlate": "AWS4528",
-              "vehicleType": "CAR"
-            }
-          ]
-          ```
-  </details>
-
-  <details>
-    <summary>Buscar um veículo</summary>
-
-    - GET: http://localhost:8080/vehicles/{id} *(id do veículo buscado)*
-        - Request:
-          ```bash
-            curl -X GET 'localhost:8080/vehicles/1'
-          ```
-        - Response 200:
-          ```json
-            {
-              "id": 1,
-              "brand": "fiat",
-              "model": "marea",
-              "color": "black",
-              "licensePlate": "EFC7449",
-              "vehicleType": "CAR"
-            }
-          ```
-        - Response 404:
-          ```json
-            {
-              "timestamp": "2023-09-22T02:01:28.566949163Z",
-              "status": 404,
-              "message": "Veículo não encontrado, id: 20",
-              "path": "/vehicles/20"
-            }
-          ```
-  </details>  
-
-  <details>
-    <summary>Atualizar um veículo</summary>
-
-    - PUT: http://localhost:8080/vehicles/{id} *(id do veículo a ser atualizado)*
-        - Request:
-          ```bash
-            curl -X PUT 'localhost:8080/vehicles/1' \
-            -H 'Content-Type: application/json' \
-            --data '{
-              "id":1,
-              "brand":"fiat",
-              "model":"marea",
-              "color":"black",
-              "licensePlate": "EFC7449",
-              "vehicleType": "CAR"
-            }'
-          ```
-        - Response 200:
-          ```json        
-            {
-              "id": 1,
-              "brand": "fiat",
-              "model": "marea",
-              "color": "black",
-              "licensePlate": "EFC7449",
-              "vehicleType": "CAR"
-            }
-          ```
-        - Response 400:
-          ```json
-            {
-              "timestamp": "2023-10-19T21:13:25.511734892Z",
-              "status": 400,
-              "message": "ocorreu um ou mais erros de validação",
-              "path": "/vehicles/1",
-              "invalidParams": [
-                {
-                  "field": "model",
-                  "message": "não deve estar em branco"
-                },
-                {
-                  "field": "brand",
-                  "message": "não deve estar em branco"
-                },
-                {
-                  "field": "licensePlate",
-                  "message": "já existe um veiculo com essa placa"
-                }
-              ]
-            }
-          ```
-  </details>
-
-  <details>
-    <summary>Deletar um veículo</summary>
-
-    - DELETE: http://localhost:8080/vehicles/{id} *(id do veículo a ser deletado)*
-        - Request:
-          ```bash
-            curl -X DELETE 'localhost:8080/vehicles/4'
-          ```
-        - Response 204:
-          ```json
-            {}
-          ```
-        - Response 404:
-          ```json
-            {
-              "timestamp": "2023-09-22T01:44:37.350570675Z",
-              "status": 404,
-              "message": "Veículo não encontrado, id: 51",
-              "path": "/vehicles"
-            }
-          ```      
-  </details>
 
